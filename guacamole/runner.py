@@ -1,3 +1,7 @@
+"""
+Executes avocado on a separate thread. While avocado executes, users can
+query the status and output of the running job as it happens.
+"""
 import threading
 import time
 
@@ -9,6 +13,11 @@ from .models import Job as JobTable
 
 
 class TestRunner(object):
+    """
+    Runs the avocado test runner on a separate thread.
+
+    Keeps track of process, output and duration of the subprocess.
+    """
 
     def __init__(self, test, job_id):
         self.job_id = job_id
@@ -41,6 +50,14 @@ class TestRunner(object):
         db_session.commit()
 
     def run_blocking(self, env_id):
+        """
+        Executes 'avocado run [test]'.
+
+        Uses pexpect to avoid output buffering, so that we can record output
+        as it happens.
+
+        :param env_id: Environment ID.
+        """
         self.start = time.time()
 
         job_entry = JobTable.query.filter_by(id=self.job_id).first()
@@ -70,6 +87,11 @@ class TestRunner(object):
         self.runner_thread.start()
 
     def dump(self):
+        """
+        Serializes information about the avocado test process.
+
+        :return: Dict with information about the avocado process.
+        """
         info_dict = dict()
         info_dict['status'] = self.status
         info_dict['output'] = self.output

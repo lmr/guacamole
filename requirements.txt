@@ -1,4 +1,5 @@
 avocado-framework==41.0
+pexpect==4.1.0
 Flask==0.11.1
 Flask-RESTful==0.3.5
 Flask-SQLAlchemy==2.1

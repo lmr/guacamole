@@ -1,3 +1,6 @@
+"""
+Job resource entry point for Guacamole.
+"""
 from flask_restful import abort, reqparse, Resource
 
 from .database import db_session
@@ -7,6 +10,11 @@ from .runner import TestRunner
 
 
 def get_job_parser():
+    """
+    Parse parameters passed to the HTTP request at the /jobs resource.
+
+    :return: Base dict structure holding parameters passed to a request.
+    """
     parser = reqparse.RequestParser()
     parser.add_argument('requester')
     parser.add_argument('environment')
@@ -15,6 +23,12 @@ def get_job_parser():
 
 
 def serialize_job_table_entry(entry):
+    """
+    Serialize a SQLAlchemy env model into a python dictionary.
+
+    :param entry: SQLAlchemy model instance.
+    :return: Dict with environment table data.
+    """
     return {'id': entry.id,
             'requester': entry.requester,
             'environment': entry.environment,
@@ -36,6 +50,11 @@ class JobInfo(object):
         self.runner = runner
 
     def dump(self):
+        """
+        Serialize Job information into a dict, convenient for REST API usage.
+
+        :return: Dict with job information.
+        """
         info_dict = dict()
         info_dict['id'] = self.id
         info_dict['requester'] = self.requester
@@ -73,11 +92,21 @@ class JobList(Resource):
     Shows a list of your jobs, and lets you POST to add new jobs.
     """
     def get(self):
+        """
+        Get all Jobs.
+
+        :return: Dict with results and count of results.
+        """
         res = [serialize_job_table_entry(entry) for
                entry in JobTable.query.all()]
         return {"results": res, "count": len(res)}
 
     def post(self):
+        """
+        Create a Job.
+
+        :return: Dict with newly created job info and HTTP 201.
+        """
         parser = get_job_parser()
         args = parser.parse_args()
         env_id = args['environment']
