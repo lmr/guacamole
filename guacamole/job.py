@@ -101,6 +101,22 @@ class JobList(Resource):
                entry in JobTable.query.all()]
         return {"results": res, "count": len(res)}
 
+    def _validate_env(self, env_id):
+        try:
+            env_id = int(env_id)
+        except ValueError:
+            e_msg = "Invalid Environment ID {}".format(env_id)
+            abort(404, message=e_msg)
+        env_entry = EnvironmentTable.query.filter_by(id=env_id)
+        if not env_entry:
+            e_msg = "Environment {} doesn't exist".format(env_id)
+            abort(404, message=e_msg)
+        env = env_entry.first()
+        if env.current_job is not None:
+            e_msg = "Environment {} is already running a job".format(env_id)
+            abort(404, message=e_msg)
+        return env_id, env
+
     def post(self):
         """
         Create a Job.
@@ -109,15 +125,9 @@ class JobList(Resource):
         """
         parser = get_job_parser()
         args = parser.parse_args()
-        env_id = args['environment']
-        env_entry = EnvironmentTable.query.filter_by(id=int(env_id))
-        if not env_entry:
-            abort(404, message="Environment {} doesn't exist".format(env_id))
-        env = env_entry.first()
-        if env.current_job is not None:
-            abort(404, message="Environment {} is already running a job".format(env_id))
+        env_id, env = self._validate_env(args['environment'])
         job_entry = JobTable(requester=args['requester'],
-                             environment=args['environment'],
+                             environment=env_id,
                              test=args['test'])
         db_session.add(job_entry)
         db_session.commit()
