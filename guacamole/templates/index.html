@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Guacamole</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/dashboard.css" rel="stylesheet">
+    <link href="static/css/dataTables.bootstrap.css" rel="stylesheet">
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+            </button>
+            <a class="navbar-brand" href="#">Guacamole</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-11 col-md-offset-1 main">
+
+            <div class="alert alert-info alert-dismisible" role="alert"
+                 style="display: none;" id="info">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+            </div>
+
+            <div class="alert alert-danger alert-dismissible" role="alert"
+                 style="display: none;" id="errors">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+            </div>
+
+
+            <div id="content">
+                <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+                    <li class="active"><a href="#joblist"
+                                          data-toggle="tab">Jobs</a></li>
+                    <li><a href="#envlist" data-toggle="tab">Environments</a>
+                    </li>
+                    <li><a href="#view-job" data-toggle="tab">View Job</a></li>
+                </ul>
+                <div id="my-tab-content" class="tab-content">
+
+                    <div class="tab-pane active" id="joblist">
+
+                        <div class="panel panel-primary">
+                            <!-- Default panel contents -->
+                            <div class="panel-heading">Submit Job</div>
+                            <div class="panel-body">
+
+                                <form class="form-horizontal">
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <label for="inputRequester"
+                                                   class="control-label col-xs-2">Requester</label>
+                                            <div class="col-xs-5">
+                                                <input type="text"
+                                                       class="form-control"
+                                                       id="inputRequester"
+                                                       placeholder="Requester">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputEnvironment"
+                                                   class="control-label col-xs-2">Environment</label>
+                                            <div class="col-xs-5">
+                                                <input type="text"
+                                                       class="form-control"
+                                                       id="inputEnvironment"
+                                                       placeholder="Environment">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputTest"
+                                                   class="control-label col-xs-2">Test</label>
+                                            <div class="col-xs-5">
+                                                <input type="text"
+                                                       class="form-control"
+                                                       id="inputTest"
+                                                       placeholder="Test">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-xs-offset-2 col-xs-5">
+                                                <button type="button"
+                                                        class="btn btn-primary"
+                                                        onclick="guacamoleApp.createJob()">
+                                                    Submit
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </form>
+
+                            </div>
+                        </div>
+                        <h2 class="sub-header" id="jobs">Job Results</h2>
+
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="results">
+                                <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Requester</th>
+                                    <th>Environment</th>
+                                    <th>Status</th>
+                                    <th>Test</th>
+                                    <th>Duration</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="envlist">
+
+                        <div class="panel panel-primary">
+                            <!-- Default panel contents -->
+                            <div class="panel-heading">Create Environment</div>
+                            <div class="panel-body">
+
+                                <form class="form-horizontal">
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <label for="inputRequester"
+                                                   class="control-label col-xs-2">Hostname</label>
+                                            <div class="col-xs-5">
+                                                <input type="text"
+                                                       class="form-control"
+                                                       id="inputHostname"
+                                                       placeholder="Hostname">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputEnvironment"
+                                                   class="control-label col-xs-2">Operating System</label>
+                                            <div class="col-xs-5">
+                                                <input type="text"
+                                                       class="form-control"
+                                                       id="inputOperatingSystem"
+                                                       placeholder="OperatingSystem">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-xs-offset-2 col-xs-5">
+                                                <button type="button"
+                                                        class="btn btn-primary"
+                                                        onclick="guacamoleApp.createEnv()">
+                                                    Submit
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </form>
+
+                            </div>
+                        </div>
+
+                        <h2 class="sub-header" id="environments">
+                            Environments</h2>
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="results-env">
+                                <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Hostname</th>
+                                    <th>Operating System</th>
+                                    <th>Current Job</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div class="tab-pane" id="view-job">
+                        <div class="panel panel-primary">
+                            <!-- Default panel contents -->
+                            <div class="panel-heading">View Job</div>
+                            <div class="panel-body">
+
+                                <form class="form-horizontal">
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <label for="inputRequester"
+                                                   class="control-label col-xs-2">Job
+                                                ID</label>
+                                            <div class="col-xs-5">
+                                                <input type="text"
+                                                       class="form-control"
+                                                       id="inputJobID"
+                                                       placeholder="Job ID">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-xs-offset-2 col-xs-5">
+                                                <button type="button"
+                                                        class="btn btn-primary"
+                                                        onclick="guacamoleApp.displayJobDetailsRefresh()">
+                                                    Submit
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </form>
+
+                            </div>
+                        </div>
+                            <table style="display: none;"
+                                   class="table table-bordered"
+                                   id="job-details">
+                                <tbody>
+                                <tr>
+                                    <td class="col-xs-1"><b>ID</b></td>
+                                    <td class="col-xs-3" id="job-id-2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="col-xs-1"><b>Requester</b></td>
+                                    <td class="col-xs-3" id="job-requester"></td>
+                                </tr>
+                                <tr>
+                                    <td class="col-xs-1"><b>Environment</b></td>
+                                    <td class="col-xs-3" id="job-environment"></td>
+                                </tr>
+                                <tr>
+                                    <td class="col-xs-1"><b>Test</b></td>
+                                    <td class="col-xs-3" id="job-test"></td>
+                                </tr>
+                                <tr>
+                                    <td class="col-xs-1"><b>Status</b></td>
+                                    <td class="col-xs-3" id="job-status"></td>
+                                </tr>
+                                <tr>
+                                    <td class="col-xs-1"><b>Duration</b></td>
+                                    <td class="col-xs-1" id="job-duration"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        <pre style="display: none;" id="job-output">
+                        </pre>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="static/js/jquery.min.js"></script>
+<script src="static/js/bootstrap.min.js"></script>
+<script src="static/js/jquery.dataTables.min.js"></script>
+<script src="static/js/Chart.min.js"></script>
+<script src="static/js/dataTables.bootstrap.min.js"></script>
+<script src="static/js/guacamoleServer.js"></script>
+<script src="static/js/guacamoleApp.js"></script>
+<script type="text/javascript">
+        $(document).ready(function() {
+            guacamoleApp.init();
+            guacamoleApp.version();
+            guacamoleApp.syncJobs();
+            guacamoleApp.syncEnvironments();
+        });
+
+</script>
+</body>
+
+</html>
