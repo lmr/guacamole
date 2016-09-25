@@ -108,10 +108,10 @@ class JobList(Resource):
             e_msg = "Invalid Environment ID {}".format(env_id)
             abort(404, message=e_msg)
         env_entry = EnvironmentTable.query.filter_by(id=env_id)
-        if not env_entry:
+        env = env_entry.first()
+        if not env:
             e_msg = "Environment {} doesn't exist".format(env_id)
             abort(404, message=e_msg)
-        env = env_entry.first()
         if env.current_job is not None:
             e_msg = "Environment {} is already running a job".format(env_id)
             abort(404, message=e_msg)
