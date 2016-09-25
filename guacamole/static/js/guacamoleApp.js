@@ -31,7 +31,32 @@ var guacamoleApp = {
            $( "#info" ).text( "Server version: " + json.version );
         });
     },
-    sendData: function(formdata, resource, label) {
+    sendFormData: function(formdata, resource, label) {
+        var url = guacamoleServerSettings.url + resource;
+
+        var xmlhttp = null;
+        if (window.XMLHttpRequest) {
+            xmlhttp = new XMLHttpRequest();
+        }
+        else if (window.ActiveXObject) {
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+
+        xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 201) {
+           var response = JSON.parse(xmlhttp.responseText);
+           alert( label + " " + response.id + " created" );
+           }
+        };
+        xmlhttp.onloadend = function() {
+        if (xmlhttp.status == 404) {
+           var response = JSON.parse(xmlhttp.responseText);
+           alert(response.message);
+           }
+        };
+        xmlhttp.open('POST', url);
+        xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xmlhttp.send(JSON.stringify(formdata));
     },
     createJob: function() {
         var requester = document.getElementById('inputRequester').value;
@@ -40,27 +65,9 @@ var guacamoleApp = {
 
         var formdata = {'requester': requester, 'environment': environment,
                         'test': test};
-        var resource = 'jobs/'
-        var label = 'Job'
-        var url = guacamoleServerSettings.url + resource;
-
-        var xmlhttp = null;
-        if (window.XMLHttpRequest) {
-            xmlhttp = new XMLHttpRequest();
-        }
-        else if (window.ActiveXObject) {
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-
-        xmlhttp.onreadystatechange = function() {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 201) {
-            var response = JSON.parse(xmlhttp.responseText);
-           alert( label + " " + response.id + " created" );
-        }
-        };
-        xmlhttp.open('POST', url);
-        xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xmlhttp.send(JSON.stringify(formdata));
+        var resource = 'jobs/';
+        var label = 'Job';
+        this.sendFormData(formdata, resource, label);
     },
     createEnv: function() {
         var hostname = document.getElementById('inputHostname').value;
@@ -68,27 +75,9 @@ var guacamoleApp = {
 
         var formdata = {'hostname': hostname,
                         'operating_system': operating_system};
-        var resource = 'environments/'
-        var label = 'Environment'
-        var url = guacamoleServerSettings.url + resource;
-
-        var xmlhttp = null;
-        if (window.XMLHttpRequest) {
-            xmlhttp = new XMLHttpRequest();
-        }
-        else if (window.ActiveXObject) {
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-
-        xmlhttp.onreadystatechange = function() {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 201) {
-            var response = JSON.parse(xmlhttp.responseText);
-           alert( label + " " + response.id + " created" );
-        }
-        };
-        xmlhttp.open('POST', url);
-        xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xmlhttp.send(JSON.stringify(formdata));
+        var resource = 'environments/';
+        var label = 'Environment';
+        this.sendFormData(formdata, resource, label);
     },
     syncJobs: function() {
         if ( $.fn.dataTable.isDataTable( "#results") ) {
