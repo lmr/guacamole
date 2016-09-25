@@ -139,6 +139,21 @@ The web application has 3 tabs:
         :width: 100%
         :align: center
 
+Setting the avocado test runner to not display colors
+-----------------------------------------------------
+
+By default, the avocado test runner displays colors in the terminal, making
+the output captured by the web service to have shell color codes in it.
+
+You can disable the color codes by::
+
+    vim ~/.config/avocado/avocado.conf
+
+Then paste the following contents on that file::
+
+    [runner.output]
+    colored = False
+
 [1] http://flask.pocoo.org/
 
 [2] http://flask-restful-cn.readthedocs.io/
