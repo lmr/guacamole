@@ -4,7 +4,7 @@
  */
 
 var guacamoleServerSettings = {
-    url: "http://localhost:5000/",
+    url: window.location.href,
 };
 
 var guacamoleServer = {

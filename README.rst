@@ -38,9 +38,22 @@ How to run the application
 
 4. now you can run guacamole::
 
-    flask run
+    flask run --host 0.0.0.0
 
 The application will greet you on http://localhost:5000/
+
+Installation on Debian Wheezy
+-----------------------------
+
+For people installing on Debian Wheezy, you have to install avocado and its
+dependencies. This is a shortcut to help people to install the right pieces::
+
+    apt-get install pip python-dev liblzma-dev
+    pip install pip --upgrade
+    pip install -r requirements-avocado.txt
+    pip install -r requirements.txt
+
+With this you should be able to get the application up and running.
 
 Using the REST API with curl
 ----------------------------
