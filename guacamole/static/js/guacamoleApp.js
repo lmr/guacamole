@@ -41,7 +41,7 @@ var guacamoleApp = {
         var formdata = {'requester': requester, 'environment': environment,
                         'test': test};
         var resource = 'jobs/'
-        var label = 'Jobs'
+        var label = 'Job'
         var url = guacamoleServerSettings.url + resource;
 
         var xmlhttp = null;
