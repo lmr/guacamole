@@ -48,10 +48,10 @@ Installation on Debian Wheezy
 For people installing on Debian Wheezy, you have to install avocado and its
 dependencies. This is a shortcut to help people to install the right pieces::
 
-    apt-get install pip python-dev liblzma-dev
-    pip install pip --upgrade
-    pip install -r requirements-avocado.txt
-    pip install -r requirements.txt
+    sudo apt-get install python-pip python-dev python-libvirt liblzma-dev
+    sudo pip install pip --upgrade
+    sudo pip install -r requirements-avocado.txt
+    sudo pip install -r requirements.txt
 
 With this you should be able to get the application up and running.
 
