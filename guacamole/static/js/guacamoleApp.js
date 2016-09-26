@@ -126,6 +126,7 @@ var guacamoleApp = {
             $( "#job-status" ).text( json.status );
             $( "#job-duration" ).text( json.duration );
             $( "#job-output" ).text( json.output );
+            $( "#job-detail-header" ).show();
             $( "#job-details" ).show();
             $( "#job-output" ).show();
             if (json.status == 'PASS' ||  json.status == 'FAIL') {
