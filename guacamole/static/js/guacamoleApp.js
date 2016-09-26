@@ -6,6 +6,7 @@
 var guacamoleApp = {
     server: guacamoleServer,
     init: function() {
+        guacamoleApp.timer = null;
         $( document ).ajaxError(function( event, jqxhr, settings, thrownError ) {
             $( "#errors" ).show();
             if ( settings.url.match( "version/$" )) {
@@ -113,7 +114,7 @@ var guacamoleApp = {
 
     },
     displayJobDetailsRefresh: function() {
-        setInterval(this.displayJobDetails, 1000);
+        guacamoleApp.timer = setInterval(this.displayJobDetails, 500);
     },
     displayJobDetails: function() {
         var jobid = document.getElementById('inputJobID').value;
@@ -127,6 +128,11 @@ var guacamoleApp = {
             $( "#job-output" ).text( json.output );
             $( "#job-details" ).show();
             $( "#job-output" ).show();
+            if (json.status == 'PASS' ||  json.status == 'FAIL') {
+                    if (guacamoleApp.timer != null) {
+                        clearInterval(guacamoleApp.timer);
+                    }
+            }
         };
         guacamoleServer.getJobById(jobid, success);
     },
