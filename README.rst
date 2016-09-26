@@ -134,7 +134,7 @@ The web application has 3 tabs:
         :width: 100%
         :align: center
 
-    .. image:: https://cloud.githubusercontent.com/assets/296807/18814649/8429dc24-82f0-11e6-855e-fa45cee4fa8f.png
+    .. image:: https://cloud.githubusercontent.com/assets/296807/18819559/27e5f56e-8369-11e6-80eb-038cc47fd7f8.png
         :alt: Job View
         :width: 100%
         :align: center
